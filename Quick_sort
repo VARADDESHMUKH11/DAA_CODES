@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int partition(vector<int> &nums, int st, int end) {
+    int indx = st - 1;
+    int pivot = nums[end];
+
+    for (int j = st; j < end; j++) {
+        if (nums[j] <= pivot) {
+            indx++;
+            swap(nums[j], nums[indx]);
+        }
+    }
+    indx++;
+    swap(nums[end], nums[indx]);
+    return indx;
+}
+
+void quicksort(vector<int> &nums, int st, int end) {
+    if (st < end) {
+        int pvtindx = partition(nums, st, end);
+        quicksort(nums, st, pvtindx - 1);
+        quicksort(nums, pvtindx + 1, end);
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    vector<int> nums(n);
+    cout << "Enter " << n << " elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
+    }
+
+    quicksort(nums, 0, n - 1);
+
+    cout << "Sorted array: ";
+    for (int val : nums) {
+        cout << val << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
