@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Structure to represent an item
+struct Item {
+    int value, weight;
+};
+
+// Comparator to sort items by value/weight ratio
+bool cmp(Item a, Item b) {
+    double r1 = (double)a.value / a.weight;
+    double r2 = (double)b.value / b.weight;
+    return r1 > r2; // Sort in descending order
+}
+
+// Function to calculate maximum value
+double fractionalKnapsack(int W, vector<Item> arr, int n) {
+    // Sort items by value/weight ratio
+    sort(arr.begin(), arr.end(), cmp);
+
+    double finalValue = 0.0; // Total value in knapsack
+
+    for (int i = 0; i < n; i++) {
+        if (arr[i].weight <= W) {
+            // Take the whole item
+            W -= arr[i].weight;
+            finalValue += arr[i].value;
+        } else {
+            // Take fraction of the item
+            finalValue += arr[i].value * ((double)W / arr[i].weight);
+            break; // Knapsack is full
+        }
+    }
+    return finalValue;
+}
+
+int main() {
+    int n, W;
+    cout << "Enter number of items: ";
+    cin >> n;
+    cout << "Enter knapsack capacity: ";
+    cin >> W;
+
+    vector<Item> arr(n);
+    cout << "Enter value and weight of each item:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i].value >> arr[i].weight;
+    }
+
+    cout << "Maximum value in Knapsack = "
+         << fractionalKnapsack(W, arr, n) << endl;
+    return 0;
+}
